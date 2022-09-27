@@ -16,7 +16,8 @@ class userController{
             await createUser.save();
             res.status(201).send('Usuário Criado Com sucesso');
         } catch (error) {
-            res.status(500).send('Não foi possível criar usuário!');
+
+            res.status(500).send('Não foi possível criar usuário!' + error);
         }
     }
     static async loginUser(req, res){
@@ -24,6 +25,7 @@ class userController{
             const emailMatch = await userModel.findOne({email: req.body.email});
             if(!emailMatch) return res.status(404).send('E-mail não existe');
             const passwordMatch = bcryptjs.compareSync(req.body.password, emailMatch.password);
+            if(!passwordMatch) return res.status(400).send('Senha incorreta');
             const token = jwt.sign({_id: passwordMatch._id}, process.env.SECRET_TOKEN, {
                 expiresIn: '12h', 
             });
@@ -38,6 +40,7 @@ class userController{
         if(!id)return res.status(400).send('Não foi possível listar o usuário, pois o id não foi informado!');
         try {
             const userSelected = await userModel.findOne({_id: id});
+            if(!userSelected) return res.status(400).send('Não foi possível encontrar o usuário');
             const userData = {
                 _id: userSelected._id,
                 name: userSelected.name,
@@ -55,6 +58,21 @@ class userController{
             res.status(200).send(usersList);
         } catch (error) {
             res.status(400).send('Não foi possível buscar os usuários');
+        }
+    }
+    static async userEmailData(req, res){
+        try {
+            const userEmail = await userModel.findOne({email: req.body.email});
+            if(!userEmail) return res.status(404).send('E-mail não existe');
+            const userData = {
+                _id: userEmail._id,
+                name: userEmail.name,
+                email: userEmail.email,
+                createdDate: userEmail.createdDate
+            };
+            res.status(200).send(userData);
+        } catch (error) {
+            res.status(400).send('Não foi possível buscar o usuário');
         }
     }
 }

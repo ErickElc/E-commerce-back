@@ -10,5 +10,6 @@ routerUsers
     .get('/users/list/:id', userController.listOneUser)
     .post('/users/new', userController.registerUser)
     .post('/users/login', userController.loginUser)
+    .post('/users/list/email', userController.userEmailData)
 
 module.exports = routerUsers;
