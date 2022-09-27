@@ -1,4 +1,4 @@
-const routerProduct = require('./product.routes');
+const productRouter = require('./product.routes');
 const routerUser = require('./user.routes');
 const routerAuth = require('./auth.routes');
 const express = require('express')
@@ -10,10 +10,10 @@ const routes = app =>{
         '/api',
         express.urlencoded({ extended: false }),
         routerUser,
-        routerProduct
+        productRouter
     )
     app.use(
-        '/auth',
+        '/auth/',
         express.urlencoded({ extended: false }),
         routerAuth
     )

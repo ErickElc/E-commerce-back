@@ -4,14 +4,14 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
-
 const PORT = process.env.PORT || 8877;
 
 const app = express();
-app.use(express.json());
-app.use(cors())
 
+app.use(cors())
+app.use(express.json())
 routes(app);
+
 
 app.listen(PORT, ()=>{
     console.log(`Server escutando na porta ${PORT}`);

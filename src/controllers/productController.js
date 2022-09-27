@@ -2,12 +2,13 @@ const productModel = require('../models/Product.js');
 
 class productController{
     static async createProduct(req, res){
-        const newProduct = new productModel(req.body);
+        const Product = new productModel(req.body);
         try {
-            newProduct.save();
+            await Product.save();
             res.status(201).send('Produto Criado!');
         } catch (error) {
-            res.status(500).send('não foi possível criar o produto');
+
+            res.status(500).send('não foi possível criar o produto' + error);
         }
     }
     static async listAllProducts (req, res){
