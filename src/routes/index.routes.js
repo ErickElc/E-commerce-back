@@ -1,4 +1,5 @@
 const productRouter = require('./product.routes');
+const entregaRouter = require('./entrega.routes');
 const routerUser = require('./user.routes');
 const routerAuth = require('./auth.routes');
 const express = require('express')
@@ -10,7 +11,8 @@ const routes = app =>{
         '/api',
         express.urlencoded({ extended: false }),
         routerUser,
-        productRouter
+        productRouter,
+        entregaRouter
     )
     app.use(
         '/auth/',
