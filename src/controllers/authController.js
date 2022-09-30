@@ -18,9 +18,10 @@ class authController{
         const token = req.body.token;
         if(!token) return res.status(403).send("Acess Denied");
         try{
+            const userSelected = await userModel.findOne({email: req.body.email})
             const userVerifed = jwt.verify(token, process.env.SECRET_TOKEN);
             req.user = userVerifed;
-            if(req.user.admin !== true) return res.status(403).send("Acess Denied");
+            if(userSelected.admin !== true) return res.status(403).send("Acess Denied");
             res.status(200).send("Acess Granted");
         }
         catch(err){
