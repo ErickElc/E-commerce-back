@@ -1,15 +1,30 @@
-const express = require('express');
-const userController = require('../controllers/userController');
-
+const userController = require("../controllers/userController");
+const authMiddleware = require("../auth/middleware");
+const express = require("express");
 
 const routerUsers = express.Router();
 
-
 routerUsers
-    .get('/users/list/all', userController.listAllUsers)
-    .get('/users/list/:id', userController.listOneUser)
-    .post('/users/new', userController.registerUser)
-    .post('/users/login', userController.loginUser)
-    .post('/users/list/email', userController.userEmailData)
+  //   FEITO
+  .get(
+    "/users/list-all",
+    authMiddleware.verifyAdmin,
+    userController.listAllUsers
+  )
+  .get(
+    "/users/list",
+    authMiddleware.verifyAccessEmail,
+    userController.userEmailData
+  )
+  //   FEITO
+  .get(
+    "/users/list/:id",
+    authMiddleware.verifyAccess,
+    userController.listOneUser
+  )
+  // FEITO
+  .post("/users/new", userController.registerUser)
+  //   FEITO
+  .post("/users/login", userController.loginUser);
 
 module.exports = routerUsers;
