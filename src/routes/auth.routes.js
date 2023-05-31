@@ -1,14 +1,12 @@
-const express = require('express');
-const authController = require('../controllers/authController');
-
+const express = require("express");
+const authController = require("../auth/auth");
 
 router = express.Router();
 
-
 router
-    .post("/free", authController.authController)
-    .post("/admin", authController.authAdmin)
-    .post("/private/free/:id", authController.authPrivatePage)
- 
+  .get("/verify-token", authController.verifyToken)
+  .get("/on-access/", authController.verifyAccessEmail)
+  .get("/admin/:id", authController.authAdmin)
+  .get("/on-access/:id", authController.verifyAccess);
 
 module.exports = router;
