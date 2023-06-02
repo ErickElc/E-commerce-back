@@ -22,7 +22,6 @@ class AuthMiddleware {
       return res.status(403).send("You are not authorized to access this page");
 
     const id = req.params?.id;
-    console.log(id);
     if (!id)
       return res.status(403).send("You are not authorized to access this page");
 

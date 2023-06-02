@@ -8,7 +8,6 @@ class AuthUtils {
       if (!userVerified) return false;
       return userVerified;
     } catch (err) {
-      console.log(err);
       return false;
     }
   }
