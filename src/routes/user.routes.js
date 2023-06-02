@@ -5,26 +5,27 @@ const express = require("express");
 const routerUsers = express.Router();
 
 routerUsers
-  //   FEITO
-  .get(
-    "/users/list-all",
-    authMiddleware.verifyAdmin,
-    userController.listAllUsers
-  )
   .get(
     "/users/list",
     authMiddleware.verifyAccessEmail,
     userController.userEmailData
   )
-  //   FEITO
   .get(
     "/users/list/:id",
     authMiddleware.verifyAccess,
     userController.listOneUser
   )
-  // FEITO
   .post("/users/new", userController.registerUser)
-  //   FEITO
-  .post("/users/login", userController.loginUser);
+  .post("/users/login", userController.loginUser)
+  .put(
+    "/users/update/:id",
+    authMiddleware.verifyAccess,
+    userController.updateUserData
+  )
+  .delete(
+    "/users/delete/:id",
+    authMiddleware.verifyAccess,
+    userController.deleteUser
+  );
 
 module.exports = routerUsers;
