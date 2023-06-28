@@ -79,12 +79,54 @@ class adminController {
       res.status(500).send("Não foi possível tornar o usuário administrador");
     }
   }
+  // PENSANDO EM UMA LÓGICA PAR ISSO
+  // static async removeAdmin(req, res) {
 
-  static async removeAdmin(req, res) {}
+  // }
 
-  static async modifyUser(req, res) {}
+  static async modifyUser(req, res) {
+    const id = req.params.id;
+    if (!id)
+      return res.status(400).send("Não foi possível modificar o usuário");
+    try {
+      const userSelected = await userModel.findOne({ _id: id.toString() });
+      if (!userSelected) return res.status(404).send("Usuário não encontrado");
+      const passwordHash = bcryptjs.hashSync(password, salt);
+      await userModel.findOneAndUpdate(
+        { _id: id.toString() },
+        {
+          $set: {
+            name: req.body.name ? req.body.name : userSelected.name,
+            phoneNumber: req.body.phoneNumber,
+            cpf: req.body.cpf ? req.body.cpf : userSelected.cpf,
+            email: req.body.email ? req.body.email : userSelected.email,
+            password: passwordHash ? passwordHash : userSelected.password,
+            age: req.body.age ? req.body.age : userSelected.age,
+          },
+        }
+      );
+      const userUpdated = await userModel.findOne({ _id: id.toString() });
+      res.status(200).send(userUpdated);
+    } catch (error) {
+      res.status(500).send("Não foi possível modificar o usuário");
+    }
+  }
 
-  static async removeUser(req, res) {}
+  static async removeUser(req, res) {
+    const id = req.params.id;
+    if (!id) return res.status(400).send("Não foi possível remover o usuário");
+    try {
+      const userSelected = await userModel.findOne({ _id: id.toString() });
+      if (!userSelected) return res.status(404).send("Usuário não encontrado");
+      await userModel.findOneAndDelete({ _id: id.toString() });
+      const deletedUser = await userModel.findOne({ _id: id.toString() });
+      if (deletedUser)
+        return res.status(400).send("Não foi possível remover o usuário");
+      res.status(200).send("Usuário removido com sucesso");
+    } catch (error) {
+      res.status(500).send("Não foi possível remover o usuário");
+    }
+  }
 }
 
 module.exports = adminController;

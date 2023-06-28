@@ -20,6 +20,11 @@ adminRouter
     authMiddleware.verifyAdmin,
     adminController.getListOfAdmins
   )
+  .put(
+    "/admin/modify-user/:id",
+    authMiddleware.verifyAdmin,
+    adminController.modifyUser
+  )
   .delete(
     "/admin/delete-user/:id",
     authMiddleware.verifyAdmin,
