@@ -57,7 +57,14 @@ class userController {
           expiresIn: "12h",
         }
       );
-      res.status(202).send(token);
+      
+      const data = {
+        email: userSelected.email,
+        id: userSelected.id,
+        name: userSelected.name,
+        token: token
+      }
+      res.status(202).send(data);
     } catch (error) {
       res.status(500).send("Não Foi possível fazer login " + error);
     }
