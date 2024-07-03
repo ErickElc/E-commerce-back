@@ -1,6 +1,29 @@
 const productModel = require("../models/Product.js");
+const AuthUtils = require("../auth/utils.js");
+const axios = require("axios");
 
 class productController {
+
+  static async listKiwifyProducts(req, res) {
+
+    try {
+      const authToken = await AuthUtils.generateTokenKiwify();
+      const Options = {
+        Authorization: `Bearer ${authToken.data.access_token}`,
+        "x-kiwify-account-id": process.env.ACCOUNT_ID,
+      };
+
+      const getProducts = await axios.get(`${process.env.KIWIFY_API}/v1/products`, {headers: Options});
+      res.status(200).send(getProducts.data);
+      for(let product of getProducts.data.data){
+        console.log(product)
+      }
+    } catch (error) {
+      console.log(error)
+      res.status(400).send(error)
+    }
+  }
+
   static async createProduct(req, res) {
     const Product = new productModel({
       name: req.body.name,
