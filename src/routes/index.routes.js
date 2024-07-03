@@ -1,5 +1,6 @@
 const productRouter = require("./product.routes");
 const entregaRouter = require("./entrega.routes");
+const paymentRouter = require("./payment.routes");
 const adminRouter = require("./admin.routes");
 const userRouter = require("./user.routes");
 const authRouter = require("./auth.routes");
@@ -12,7 +13,8 @@ const routes = (app) => {
     userRouter,
     productRouter,
     entregaRouter,
-    adminRouter
+    adminRouter,
+    paymentRouter
   );
   app.use("/auth", express.urlencoded({ extended: false }), authRouter);
 };
