@@ -6,6 +6,7 @@ const productRouter = express.Router();
 
 productRouter
   .get("/products/list/all", productController.listAllProducts)
+  .get("/products/list-kiwify/all", productController.listKiwifyProducts)
   .get("/products/list/:id", productController.listOneProduct)
   .post(
     "/products/new",
